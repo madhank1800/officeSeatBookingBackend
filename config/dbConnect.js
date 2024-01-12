@@ -2,15 +2,15 @@
 const mongoose=require('mongoose');
 const options = {
     useNewUrlParser: true,
-    useUnifiedTopology: true,
+  useUnifiedTopology: true,
   };
 const dbConnect=()=>{
-    try{
-        mongoose.connect(process.env.MONGODB_URI,options);
-     //console.log("database connected  succesfully");
-    }catch(err){
-        throw new Error("database error");
-    }
+  try {
+    mongoose.connect(process.env.MONGODB_URI, options);
+    //console.log("database connected  succesfully");
+  } catch (err) {
+    throw new Error("database error");
+  }
     const con = mongoose.connection;
 con.on("open", (req, res) => {
   console.log("connected");

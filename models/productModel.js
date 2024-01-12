@@ -1,64 +1,65 @@
-const mongoose = require('mongoose'); // Erase if already required
+const mongoose = require("mongoose"); // Erase if already required
 
 // Declare the Schema of the Mongo model
 var productSchema = new mongoose.Schema(
-    {
-    title:{
-        type:String,
-        required:true,
-        trim:true,
-        
+  {
+    title: {
+      type: String,
+      required: true,
+      trim: true,
     },
-    slug:{
-        type:String,
-        required:true,
-        unique:true,
-        lowercase:true
+    slug: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
     },
-    description:{
-        type:String,
-        required:true,
+    description: {
+      type: String,
+      required: true,
     },
-    price:{
-        type:Number,
-        required:true,
+    price: {
+      type: Number,
+      required: true,
     },
-    category:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"Category"
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
     },
-    brand:{
-        type:String,
-        enum:["Apple","Samsung","Nokia"]
+    brand: {
+      type: String,
+      enum: ["Apple", "Samsung", "Nokia"],
     },
-    quantity:{
-        type:Number,
-        required:true
+    quantity: {
+      type: Number,
+      required: true,
     },
-    sold:{
-        type:Number,
-        default:0
+    sold: {
+      type: Number,
+      default: 0,
     },
-    images:{
-        type:Array
+    images: {
+      type: Array,
     },
-    color:{
-  type:String,
-  enum:["red","Brown","Blue"]
+    color: {
+      type: String,
+      enum: ["red", "Brown", "Blue"],
     },
-    ratings:[
-        {
-            star:Number,
-            postedBy:{
-                type:mongoose.Schema.Types.ObjectId,
-                ref:"User"
-            }
-        }
-    ]
-},{
-    timestamps:true
-}
+    ratings: [
+      {
+        star: Number,
+        Comment:String,
+        postedBy: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+      },
+    ],
+  },
+  {
+    timestamps: true,
+  }
 );
 
 //Export the model
-module.exports = mongoose.model('Product', productSchema);
+module.exports = mongoose.model("Product", productSchema);
