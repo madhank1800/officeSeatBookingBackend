@@ -4,6 +4,11 @@ const app = express();
 const cors = require("cors");
 const authRouter = require("./Routes/authRouter");
 const productRouter = require("./Routes/productRouter");
+const seatRouter=require('./Routes/seatRouter');
+const seatingRouter=require('./Routes/seatingRouter');
+const bookingRouter=require('./Routes/bookingRoute');
+const bookRouter=require('./Routes/bookRoute');
+
 const categoryRouter = require("./Routes/prodcategoryRouter");
 const blogRouter = require("./Routes/blogRouter");
 const blogcategoryRouter = require("./Routes/blogCatRoute");
@@ -35,6 +40,10 @@ app.use(morgan("dev"));
 
 app.use("/api/user", authRouter);
 app.use("/api/product", productRouter);
+app.use('/api/seat',seatRouter);
+app.use('/api/seating',seatingRouter);
+app.use('/api/booking',bookingRouter);
+app.use('/api/book',bookRouter);
 
 app.use("/api/blog", blogRouter);
 app.use("/api/category", categoryRouter);

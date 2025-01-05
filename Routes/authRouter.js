@@ -16,7 +16,7 @@ const {
 const { authMiddleWare, isAdmin } = require("../middlewares/authMiddleware");
 router.post("/register", createUSer);
 router.post("/login", loginUserCtrl);
-router.get("/all-users", getallUsers);
+router.post("/all-users",authMiddleWare,isAdmin, getallUsers);
 router.get("/refresh", handlerefreshToken);
 router.get("/logout", logout);
 router.put("/password", authMiddleWare, updatePassword);

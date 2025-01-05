@@ -1,11 +1,12 @@
 const { generateToken } = require("../config/jwtToken");
 const User = require("../models/userModel");
 const asyncHandler = require("express-async-handler");
-
+const Book=require('../models/bookModel');
 const { validateMongodbId } = require("../utils/validateMongodbId");
 const { generateRefreshToken } = require("../config/refreshToken");
 const jwt = require("jsonwebtoken");
 const { emailSender } = require("./emailCtrl");
+
 const createUSer = asyncHandler(async (req, res) => {
   const email = req.body.email;
 
@@ -16,7 +17,7 @@ const createUSer = asyncHandler(async (req, res) => {
     const newUser = await User.create(req.body);
     res.json(newUser);
   } else {
-    throw new Error("user not existed");
+    throw new Error("user already existed");
   }
 });
 
@@ -176,12 +177,93 @@ const logout = asyncHandler(async (req, res) => {
 //get-all users
 const getallUsers = asyncHandler(async (req, res) => {
   try {
-    const getUsers = await User.find();
-    res.json(getUsers);
+    const getUsers = await User.find().lean();
+  
+
+  //    const currentDate = new Date();
+  // const dateOnly = currentDate.toISOString().split('T')[0];
+  //   console.log("currentDate",dateOnly);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    const getBookings=await Book.find({"bookingDate":{$eq:req.body.BookingDate}}).populate('seat');
+
+
+const processBookingData = (getBookings, getUsers) => {
+  
+   // Convert user _id to string for easier comparison
+   const usersMap = getUsers.map(user => ({
+ 
+    ...user,
+   // _id: user._id, // Convert ObjectId to string
+    bookings: [], // Add a bookings array to store matched booking details
+}));
+
+  console.log("usersMAp", usersMap);
+  // Iterate through the bookings and match them with users
+  getBookings.forEach(booking => {
+    const employeeId = booking.employee.toString(); // Convert ObjectId to string
+    const seatId = booking.seat._id.toString(); // Extract seatId from booking
+    const seatNumber = booking.seat.seatNumber; // Extract seatNumber from booking
+    const slotTime = booking.slot_time; // Extract slot_time from booking
+
+
+console.log("employeeId",employeeId);
+console.log("seatId",seatId);
+console.log("seatNumber",seatNumber);
+console.log("slotTime",slotTime);
+
+    // Find the corresponding user in usersMap
+    const user = usersMap.find(user => user._id.toString() === employeeId);
+    console.log("user",user);
+    if (user) {
+      // Add booking details to the user's bookings array
+      user.bookings.push({
+        seatId,
+        seatNumber,
+        slotTime,
+      });
+    }
+  });
+
+  return usersMap; // Return the enriched users data
+};
+
+// Example usage
+const enrichedUsers = processBookingData(getBookings, getUsers);
+
+console.log("enrichedUsers",enrichedUsers); // Pretty print the result
+console.log("getBookings",getBookings);
+//console.log("getUsers",getUsers);
+    res.json(enrichedUsers);
+    
+
   } catch (error) {
     throw new Error(error);
   }
-});
+}); 
 
 // get a user by Id
 const getaUser = asyncHandler(async (req, res) => {
