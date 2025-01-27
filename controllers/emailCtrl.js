@@ -9,7 +9,7 @@ const transporter = nodemailer.createTransport({
   port: 465,
   secure: true,
   auth: {
-    // TODO: replace `user` and `pass` values from <https://forwardemail.net>
+
     user: process.env.MAIL_ID,
     pass: process.env.MAIL_PWD,
   },
@@ -19,11 +19,11 @@ const transporter = nodemailer.createTransport({
     
     
     const info = await transporter.sendMail({
-      from: '"hey 👻" <abc@gmail.com>', // sender address
-      to: data.to, // list of receivers
-      subject: data.subject, // Subject line
-      text: data.text, // plain text body
-      html: data.htm, // html body
+      from: '"hey 👻" <abc@gmail.com>', 
+      to: data.to, 
+      subject: data.subject, 
+      text: data.text, 
+      html: data.htm, 
     });
     info();
 

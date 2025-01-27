@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
-//const User=require('./userModel');
-//const Seat=require('./seatModel');
+
 const BookSchema = new mongoose.Schema({
   employee: { 
     type: mongoose.Schema.Types.ObjectId, 
@@ -18,17 +17,28 @@ const BookSchema = new mongoose.Schema({
   },
   shiftstartTime: { 
     type: String, 
-    required: true 
+  
   },
   shiftendTime: { 
     type: String, 
-    required: true 
+     
   },
   shift:{
-    type:String,required:true
+    type:String,
+ 
   },
   slot_time:{
 type:String,required:true
+  },
+  seatName:{type:String},
+  email:{
+    type:String
+  },
+  firstName:{
+type:String
+  },
+  lastName:{
+    type:String
   },
   createdAt: { type: Date, default: Date.now },
 });

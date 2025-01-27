@@ -9,11 +9,6 @@ const router=express();
 router.post('/',authMiddleWare,createBooking);
 
 
-// router.put('/:id', authMiddleWare, isAdmin, updateSeat);
-
-// router.get('/:id',getaSeat);
-// router.get('/',getallSeats);
-// router.delete('/:id',authMiddleWare ,isAdmin,deleteSeat);
 
 
 module.exports=router;

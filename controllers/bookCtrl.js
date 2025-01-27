@@ -4,34 +4,21 @@ const  Book=require('../models/bookModel');
 const Seating=require('../models/seatingModel');
 const User=require('../models/userModel');
 const createBook= asyncHandler(async (req, res) => {
-    //console.log("us123", req.user);
-    //console.log("madhan")
+ 
      console.log("nssn",req.body);
 
 
-// const session = await mongoose.startSession();
-// session.startTransaction(); 
+ 
 
 
 
 try {
-
-    // const existingBooking = await Booking.findOne({
-    //   seat: seatId,
-    //   date,
-    //   $or: [
-    //     { startTime: { $lt: endTime }, endTime: { $gt: startTime } },
-    //   ],
-    // }).session(session);
+    
   
-    // if (existingBooking) {
-    //   throw new Error('This seat is already booked for the selected time slot.');
-    // }
 
     const { seatId, bookingDate, startTime, endTime, shift, slot_time } = req.body;
 
 
- // Check if the booking already exists for the given seat, date, and time slot
  const existingBooking = await Book.findOne({
     seat: seatId,
     bookingDate: new Date(bookingDate),
@@ -51,30 +38,31 @@ try {
     if(new Date(req.body.bookingDate) > new Date(dateOnly)){
 
     const booking = new Book({
-        employee: req.user._id,//employeeId, Replace with Employee ObjectId
-        seat: req.body.seatId,         // Replace with Seat ObjectId
+        employee: req.user._id,
+        seat: req.body.seatId,      
         bookingDate: new Date(req.body.bookingDate), 
         shiftstartTime: req.body.shiftstartTime,
         shiftendTime: req.body.shiftendTime,
         shift:req.body.shift,
-        slot_time:req.body.slot_time
+        slot_time:req.body.slot_time,
+        seatName:req.body.seatName, 
+        email:req.body.email,
+        firstName:req.body.firstName,
+        lastName:req.body.lastName
       });
       await booking.save();
 
-     // await booking.save({ session });
-    // const book=Booking.create(req.body);
-    //res.json(booking);  
+     
     res.status(201).json({ message: "Booking successfully created.", booking });
     }else{
       return   res.status(400).json({ message: "Mentioned booking day is already completed and try new diffrent days"});
     }
-    // await session.commitTransaction();
+
 } catch (error) {
     console.log("err",error); 
- // await session.abortTransaction();
- // throw error;
+
 } finally {
- // session.endSession();
+
 }
 
 
@@ -95,9 +83,8 @@ const bookingsOnParticularDay=asyncHandler(async(req,res)=>{
 console.log("req.body.bookingsOnDay",req.body.bookingsOnDay);
   const requestedDate = req.body.bookingsOnDay;
 
-  // Validate if the requested date is not before the current date
   if (new Date(requestedDate) < new Date(dateOnly)) {
-    return res.status(400).json({ message: "Invalid date: Bookings can only be retrieved for future dates." });
+   return res.status(200).json({ message: "Invalid date: Bookings can only be retrieved for future dates." });
   }
 
   const getSeats = await Seating.find();
@@ -107,25 +94,23 @@ console.log("req.body.bookingsOnDay",req.body.bookingsOnDay);
 
 
 
-    //updated code  from
      
     const updateSeatAvailability= (getSeats, bookData)=>{
-      // Iterate over bookData to update matching seats in getSeats
                bookData.forEach((booking) => {
                 getSeats.forEach((seat) => {
-                // Check if the seat in getSeats matches the seat in bookData
+                
                  if (seat.seatNumber === booking.seat.seatNumber) {
-            // Update all matching slot_time values in availability array
+        
                    seat.availability.forEach((slot) => {
                     if (slot.slot_time === booking.slot_time) {
-                slot.isAvailable = false; // Set isAvailable to false
+                slot.isAvailable = false; 
               }
             });
           }
         });
       });
       
-               return getSeats; // Return the updated seats data
+               return getSeats; 
                      
                       }
 
@@ -138,12 +123,8 @@ console.log("req.body.bookingsOnDay",req.body.bookingsOnDay);
      
           const bookData=await Book.find({ 
            
-           "bookingDate": { $eq:dateOnly}, // Filter by date
+           "bookingDate": { $eq:dateOnly}, 
      
-           //"startTime": { $gte: shiftStart.toLocaleTimeString('en-US', { hour12: false }) }, // Filter by shift start
-          // "endTime": { $lte: shiftEnd.toLocaleTimeString('en-US', { hour12: false }) }, // Filter by shift end
-                
-           //"startTime":{$eq:'10:00'}
            }).populate('seat');
           console.log("book",bookData);
      
@@ -164,12 +145,9 @@ console.log("req.body.bookingsOnDay",req.body.bookingsOnDay);
 
         const bookData=await Book.find({ 
            
-          "bookingDate": { $eq:requestedDate}, // Filter by date
+          "bookingDate": { $eq:requestedDate}, 
     
-          //"startTime": { $gte: shiftStart.toLocaleTimeString('en-US', { hour12: false }) }, // Filter by shift start
-         // "endTime": { $lte: shiftEnd.toLocaleTimeString('en-US', { hour12: false }) }, // Filter by shift end
-               
-          //"startTime":{$eq:'10:00'}
+   
           }).populate('seat');
          console.log("book",bookData);
          console.log("book1",bookData.length);
@@ -188,6 +166,7 @@ console.log("req.body.bookingsOnDay",req.body.bookingsOnDay);
       }
 
  }catch(error){
+  console.log("error in booking a day",error);
   throw new Error(error);
  }
 
@@ -209,14 +188,14 @@ const cancelBooking=asyncHandler(async(req,res)=>{
   const dateOnly = currentDate.toISOString().split('T')[0];
     console.log("currentDate",dateOnly);
 
- // Ensure all required fields are provided
+
  if (!employee || !seat || !bookingDate || !slot_time) {
   return res.status(400).json({ message: "All fields are required." });
 }
 
 
 if(new Date(bookingDate)> new Date(dateOnly)){
-// Delete the record matching the criteria
+
 const deletedBooking = await Book.findOneAndDelete({
   employee:employee,
   seat:seat,
@@ -248,11 +227,38 @@ res.status(200).json({
 })
 
 
+const getEmployeeBooking=asyncHandler(async(req,res)=>{
+const booktutu=req.body.employeeDetail;
+
+console.log("booktutu",booktutu);
+  try{
+   const response =await Book.find({ "employee": { $eq:req.body.employeeDetail},});
+
+     if (!response || response.length === 0) {
+      return res.status(200).json({ message: "No bookings found for this employee" });
+    }
+
+    res.status(200).json({
+      success: true,
+      bookings: response,
+    });
+
+  
+
+
+
+
+
+  }catch(error){
+    console.log(error);
+  }
+})
+
 
 
 
 module.exports = {
-    createBook,bookingsOnParticularDay,cancelBooking
+    createBook,bookingsOnParticularDay,cancelBooking,getEmployeeBooking
 
 
 }

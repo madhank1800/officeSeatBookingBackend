@@ -7,7 +7,7 @@ const options = {
 const dbConnect=()=>{
   try {
     mongoose.connect(process.env.MONGODB_URI, options);
-    //console.log("database connected  succesfully");
+    
   } catch (err) {
     throw new Error("database error");
   }

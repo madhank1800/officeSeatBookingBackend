@@ -11,3 +11,4 @@ router.get('/allseats',authMiddleWare,getallSeats);
 
 
 module.exports=router;
+    

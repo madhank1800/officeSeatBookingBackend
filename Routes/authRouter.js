@@ -9,7 +9,7 @@ const {
   updatedUser,
   blockUser,
   unblockUser,
-  handlerefreshToken,
+  handlerefreshToken,   
   logout,
   updatePassword,forgetPasswordToken,resetPassword
 } = require("../controllers/userCtrl");
@@ -21,7 +21,7 @@ router.get("/refresh", handlerefreshToken);
 router.get("/logout", logout);
 router.put("/password", authMiddleWare, updatePassword);
 router.post("/forget-password-token", forgetPasswordToken);
-
+  
 router.put('/reset-password/:token', resetPassword);
 router.get("/:id", authMiddleWare, isAdmin, getaUser);
 router.delete("/:id", deleteUser);

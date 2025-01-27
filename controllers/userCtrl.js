@@ -13,7 +13,7 @@ const createUSer = asyncHandler(async (req, res) => {
   const findUser = await User.findOne({ email: email });
 
   if (!findUser) {
-    //create a new user
+
     const newUser = await User.create(req.body);
     res.json(newUser);
   } else {
@@ -21,10 +21,10 @@ const createUSer = asyncHandler(async (req, res) => {
   }
 });
 
-//login functionality
+
 const loginUserCtrl = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
-  //check if user exist or not
+
 
   const findUser = await User.findOne({ email });
   if (findUser && (await findUser.isPasswordMatched(password))) {
@@ -45,7 +45,7 @@ const loginUserCtrl = asyncHandler(async (req, res) => {
       firstname: findUser?.firstname,
       lastname: findUser?.lastname,
       email: findUser?.email,
-      mobile: findUser?.mobile,
+     
       role:findUser?.role,
       token: generateToken(findUser?._id),
     });
@@ -54,7 +54,7 @@ const loginUserCtrl = asyncHandler(async (req, res) => {
   }
 });
 
-//change password
+
 
 const updatePassword = asyncHandler(async (req, res) => {
   const { _id } = req.user;
@@ -71,7 +71,7 @@ const updatePassword = asyncHandler(async (req, res) => {
   }
 });
 
-//forget password token
+
 
 const forgetPasswordToken = asyncHandler(async (req, res) => {
   const { email } = req.body;
@@ -95,7 +95,7 @@ const forgetPasswordToken = asyncHandler(async (req, res) => {
 });
 
 
-//reset password
+
 
 const resetPassword = asyncHandler(async (req, res) => {
    const { password } = req.body;
@@ -118,8 +118,6 @@ const resetPassword = asyncHandler(async (req, res) => {
 
 
 
-//handle refresh token
-
 const handlerefreshToken = asyncHandler(async (req, res) => {
   const cookie = req.cookies;
   console.log("test:-", cookie);
@@ -141,7 +139,7 @@ const handlerefreshToken = asyncHandler(async (req, res) => {
   });
 });
 
-//log out functionality
+
 
 const logout = asyncHandler(async (req, res) => {
   const cookie = req.cookies;
@@ -157,9 +155,6 @@ const logout = asyncHandler(async (req, res) => {
     return res.sendStatus(204);
   }
 
-  // await User.findOneAndUpdate(refreshToken,{
-  //    refreshToken:""
-  // });
 
   await User.findOneAndUpdate(
     { refreshToken: refreshToken },
@@ -174,16 +169,13 @@ const logout = asyncHandler(async (req, res) => {
   res.sendStatus(204);
 });
 
-//get-all users
+
 const getallUsers = asyncHandler(async (req, res) => {
   try {
     const getUsers = await User.find().lean();
   
 
-  //    const currentDate = new Date();
-  // const dateOnly = currentDate.toISOString().split('T')[0];
-  //   console.log("currentDate",dateOnly);
-
+ 
 
 
 
@@ -213,21 +205,20 @@ const getallUsers = asyncHandler(async (req, res) => {
 
 const processBookingData = (getBookings, getUsers) => {
   
-   // Convert user _id to string for easier comparison
    const usersMap = getUsers.map(user => ({
  
     ...user,
-   // _id: user._id, // Convert ObjectId to string
-    bookings: [], // Add a bookings array to store matched booking details
+
+    bookings: [], 
 }));
 
   console.log("usersMAp", usersMap);
-  // Iterate through the bookings and match them with users
+
   getBookings.forEach(booking => {
-    const employeeId = booking.employee.toString(); // Convert ObjectId to string
-    const seatId = booking.seat._id.toString(); // Extract seatId from booking
-    const seatNumber = booking.seat.seatNumber; // Extract seatNumber from booking
-    const slotTime = booking.slot_time; // Extract slot_time from booking
+    const employeeId = booking.employee.toString(); 
+    const seatId = booking.seat._id.toString(); 
+    const seatNumber = booking.seat.seatNumber; 
+    const slotTime = booking.slot_time; 
 
 
 console.log("employeeId",employeeId);
@@ -235,11 +226,11 @@ console.log("seatId",seatId);
 console.log("seatNumber",seatNumber);
 console.log("slotTime",slotTime);
 
-    // Find the corresponding user in usersMap
+
     const user = usersMap.find(user => user._id.toString() === employeeId);
     console.log("user",user);
     if (user) {
-      // Add booking details to the user's bookings array
+     
       user.bookings.push({
         seatId,
         seatNumber,
@@ -248,15 +239,15 @@ console.log("slotTime",slotTime);
     }
   });
 
-  return usersMap; // Return the enriched users data
+  return usersMap; 
 };
 
-// Example usage
+
 const enrichedUsers = processBookingData(getBookings, getUsers);
 
-console.log("enrichedUsers",enrichedUsers); // Pretty print the result
+console.log("enrichedUsers",enrichedUsers); 
 console.log("getBookings",getBookings);
-//console.log("getUsers",getUsers);
+
     res.json(enrichedUsers);
     
 
@@ -265,9 +256,9 @@ console.log("getBookings",getBookings);
   }
 }); 
 
-// get a user by Id
+
 const getaUser = asyncHandler(async (req, res) => {
-  // console.log(req.params);
+
   console.log("madhan kumar madhan kumar");
   const { id } = req.params;
   validateMongodbId(id);
@@ -279,7 +270,7 @@ const getaUser = asyncHandler(async (req, res) => {
   }
 });
 
-//delete a user by id
+
 const deleteUser = asyncHandler(async (req, res) => {
   const { id } = req.params;
   validateMongodbId(id);
@@ -291,10 +282,10 @@ const deleteUser = asyncHandler(async (req, res) => {
   }
 });
 
-//update a user by id
+
 
 const updatedUser = asyncHandler(async (req, res) => {
-  // const {id}=req.params;
+
   const { _id } = req.user;
   validateMongodbId(_id);
   try {

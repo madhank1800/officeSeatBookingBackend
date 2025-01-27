@@ -13,7 +13,9 @@ var subSeatslotSchema=new mongoose.Schema({
 
 
 var seatingSchema= new mongoose.Schema({
-    seatNumber:{
+
+    seatNumber:{type:Number,required:true,unique:true},
+    seatName:{
         type:String,
         required:true,unique:true
     },
@@ -31,34 +33,9 @@ var seatingSchema= new mongoose.Schema({
 
       subSeatslotSchema
       
-    //     {
-    //   slot_time:{ 
-    //     type:String,required:true
-    //   },
-    //   isAvailable:{
-    //     type:Boolean,required:true
-    //   },
+ 
 
-    // }
-,
-// {
-//     time_slot:{
-//       type:String,required:true
-//     },
-//     isAvailable:{  
-//       type:Boolean,required:true
-//     },
 
-//   },
-//   {
-//     time_slot:{
-//       type:String,required:true
-//     },
-//     isAvailable:{
-//       type:Boolean,required:true
-//     },
-
-//   }
 ],
     createdAt: { type: Date, default: Date.now },
 
