@@ -4,16 +4,17 @@
 The Office Seating Booking App is a web-based platform that allows users to book office seats for different time periods in a day. It ensures that users can only book seats for the current or future dates, preventing past bookings. The app features a responsive UI for seamless user experience.
 
 # Features :-
-User Authentication: Login and Signup functionality.
-Office Seat Booking: Users can book a seat for three different time periods in a day.
-Booking Restriction: Users cannot book a seat for past dates.
-Booking Display: All booked seats are displayed in a structured manner.
-Responsive UI: Optimized for all screen sizes.
+## User Authentication: Login and Signup functionality.
+## Office Seat Booking: Users can book a seat for three different time periods in a day.
+## Booking Restriction: Users cannot book a seat for past dates.
+## Booking Display: All booked seats are displayed in a structured manner.
+## Responsive UI: Optimized for all screen sizes.
 
 # TechStack :-
-Frontend: React.js, Material UI, CSS3
-Backend: Node.js, Express.js ,Mongoose
-Database:  MongoDB
+## Frontend: React.js, Material UI, CSS3
+## Backend: Node.js, Express.js ,Mongoose
+## Database:  MongoDB
+
 ![Screenshot (50)](https://github.com/user-attachments/assets/d861b9ed-2316-4b38-9028-039356c2669a)
 ![Screenshot (49)](https://github.com/user-attachments/assets/4bb3b382-3d90-462d-86fc-74def4beb0f5)
 ![Screenshot (48)](https://github.com/user-attachments/assets/a361d6c9-4aab-43a3-af20-67f7bb042299)
